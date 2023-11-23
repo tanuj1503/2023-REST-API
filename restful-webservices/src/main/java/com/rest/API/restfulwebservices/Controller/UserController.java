@@ -1,4 +1,4 @@
-package com.rest.API.restfulwebservices.UserController;
+package com.rest.API.restfulwebservices.Controller;
 
 import java.util.List;
 
@@ -7,27 +7,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.rest.API.restfulwebservices.Service.UserDaoServive;
 import com.rest.API.restfulwebservices.UserBean.User;
-import com.rest.API.restfulwebservices.UserService.UserService;
 
 @RestController
 public class UserController {
 	
 	@Autowired
-	public UserService service;
+	public UserDaoServive service;
 	
-//	public UserService service;
-//	public UserController(UserService service){
-//		this.service = service;
-//	}
-//	
 	@GetMapping("/users")
-	public List<User> retrieveAllUsers(){
+	public List<User> RetrieveAllUSers(){
 		return service.findAll();
 	}
-	
+
 	@GetMapping("/users/{id}")
-	public User retrieveUser(@PathVariable int id) {
+	public User RetrieveUSer(@PathVariable int id){
 		return service.findOne(id);
 	}
 }
