@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.rest.API.restfulwebservices.Controller.ExceptionHandler.UserNotFoundException;
 import com.rest.API.restfulwebservices.Service.UserDaoServive;
 import com.rest.API.restfulwebservices.UserBean.User;
 
@@ -25,17 +26,20 @@ public class UserController {
 	public List<User> RetrieveAllUSers(){
 		return service.findAll();
 	}
-
+	
 	@GetMapping("/users/{id}")
-	public User RetrieveUSer(@PathVariable int id){
-		return service.findOne(id);
+	public User RetrieveUserById(@PathVariable int id) {
+		User user = service.findOne(id);
+		if(user == null) {
+			throw new UserNotFoundException("id:"+id);
+		}
+		return user;
 	}
 	
 	@PostMapping("/user")
-	public ResponseEntity<User> createUser(@RequestBody User user) {
+	public ResponseEntity<User> AddUser(@RequestBody User user) {
 		User savedUser = service.save(user);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedUser.getId()).toUri();
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id})").buildAndExpand(savedUser).toUri();
 		return ResponseEntity.created(location).build();
 	}
-	
 }
